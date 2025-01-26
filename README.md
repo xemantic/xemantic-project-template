@@ -10,6 +10,8 @@ Creating new gradle projects, with all the conventions we are using at [Xemantic
 
 [//]: # (TODO replace with the rationale behind the new project)
 
+[//]: # (TODO everything starting from here can be removed in your project)
+
 ## How?
 
 1. When creating new GitHub project choose this repository as a template
