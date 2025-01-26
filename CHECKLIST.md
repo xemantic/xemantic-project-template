@@ -10,5 +10,5 @@
   * [LICENSE](LICENSE)
   * [.idea/copyright](.idea/copyright) folder (it is easier to edit it through IDEA settings)
 * [ ] Update [README.md](README.md) with the description and rationale behind your project. Remove irrelevant part focused on the template project.
-* [ ] Go through [build.gradle.kts] and fix all the TODOs.
+* [ ] Go through [build.gradle.kts](build.gradle.kts) and fix all the TODOs.
 * [ ] Delete this `CHECKLIST.md` file
