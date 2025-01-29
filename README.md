@@ -18,7 +18,7 @@ A template repository for Xemantic's Kotlin multiplatform projects
 [<img alt="GitHub contributors" src="https://img.shields.io/github/contributors/xemantic/xemantic-project-template">](https://github.com/xemantic/xemantic-project-template/graphs/contributors)
 [<img alt="GitHub commit activity" src="https://img.shields.io/github/commit-activity/t/xemantic/xemantic-project-template">](https://github.com/xemantic/xemantic-project-template/commits/main/)
 [<img alt="GitHub code size in bytes" src="https://img.shields.io/github/languages/code-size/xemantic/xemantic-project-template">]()
-[<img alt="GitHub Created At" src="https://img.shields.io/github/created-at/xemantic/xemantic-project-template">](https://github.com/xemantic/xemantic-project-template/commit/39c1fa4c138d4c671868c973e2ad37b262ae03c2)
+[<img alt="GitHub Created At" src="https://img.shields.io/github/created-at/xemantic/xemantic-project-template">](https://github.com/xemantic/xemantic-project-template/commits)
 [<img alt="kotlin version" src="https://img.shields.io/badge/dynamic/toml?url=https%3A%2F%2Fraw.githubusercontent.com%2Fxemantic%2Fxemantic-project-template%2Fmain%2Fgradle%2Flibs.versions.toml&query=versions.kotlin&label=kotlin">](https://kotlinlang.org/docs/releases.html)
 [<img alt="discord users online" src="https://img.shields.io/discord/811561179280965673">](https://discord.gg/vQktqqN2Vn)
 [![Bluesky](https://img.shields.io/badge/Bluesky-0285FF?logo=bluesky&logoColor=fff)](https://bsky.app/profile/xemantic.com)
