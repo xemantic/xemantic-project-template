@@ -31,6 +31,19 @@ Creating new gradle projects, with all the conventions we are using at [Xemantic
 
 [//]: # (TODO everything starting from here can be removed in your project)
 
+## Usage
+
+> [!NOTE]
+> There is no value in using this project directly as a dependency, however the usage section is included, so you can replace it with your project dependency:
+
+In `build.gradle.kts` add:
+
+```kotlin
+dependencies {
+    implementation("com.xemantic.template:xemantic-project-template:0.2.0")
+}
+```
+
 ## How?
 
 1. When creating new GitHub project choose this repository as a template
