@@ -223,8 +223,16 @@ jreleaser {
         github {
             skipRelease = true // we are releasing through GitHub UI
             skipTag = true
-            token = "empty" // we need a placeholder
+            token = "empty"
+            changelog {
+                enabled = false
+            }
         }
+    }
+    checksum {
+        individual = false
+        artifacts = false
+        files = false
     }
     announce {
         webhooks {
@@ -239,6 +247,10 @@ jreleaser {
             active = Active.ALWAYS
             subject = releaseAnnouncementSubject
             message = releaseAnnouncement
+        }
+        bluesky {
+            active = Active.ALWAYS
+            status = releaseAnnouncement
         }
     }
 }
