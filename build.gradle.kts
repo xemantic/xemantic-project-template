@@ -62,7 +62,10 @@ kotlin {
     compilerOptions {
         apiVersion = kotlinTarget
         languageVersion = kotlinTarget
-        freeCompilerArgs.add("-Xmulti-dollar-interpolation")
+        freeCompilerArgs.addAll(
+            "-Xcontext-parameters",
+            "-Xcontext-sensitive-resolution"
+        )
         extraWarnings = true
         progressiveMode = true
     }
@@ -88,7 +91,7 @@ kotlin {
     wasmJs {
         browser()
         nodejs()
-        //d8()
+        d8()
         // TODO remove for a non-library project
         binaries.library()
     }
