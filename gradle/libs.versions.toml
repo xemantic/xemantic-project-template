@@ -2,7 +2,7 @@
 kotlinTarget = "2.2"
 javaTarget = "17"
 
-kotlin = "2.2.0"
+kotlin = "2.2.20"
 
 xemanticKotlinTest = "1.14.0"
 
