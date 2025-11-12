@@ -1,14 +1,11 @@
 @file:OptIn(ExperimentalWasmDsl::class, ExperimentalKotlinGradlePluginApi::class)
 
-import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
-import com.xemantic.gradle.conventions.License
+import com.vanniktech.maven.publish.JavadocJar
+import com.vanniktech.maven.publish.KotlinMultiplatform
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
-import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType
-import org.jetbrains.kotlin.gradle.swiftexport.ExperimentalSwiftExportDsl
-import org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTarget
 import org.jreleaser.model.Active
 
 plugins {
@@ -17,8 +14,7 @@ plugins {
     alias(libs.plugins.kotlinx.binary.compatibility.validator)
     alias(libs.plugins.dokka)
     alias(libs.plugins.versions)
-    `maven-publish`
-    signing
+    alias(libs.plugins.maven.publish)
     alias(libs.plugins.jreleaser)
     alias(libs.plugins.xemantic.conventions)
 }
@@ -29,31 +25,20 @@ group = "com.xemantic.template"
 // TODO fill up the details
 xemantic {
     description = "A template repository for Xemantic's Kotlin multiplatform projects"
-    inceptionYear = 2025
-    license = License.APACHE
-    developer(
-        id = "morisil",
-        name = "Kazik Pogoda",
-        email = "morisil@xemantic.com"
-    )
+    inceptionYear = "2025"
+    applyAllConventions()
 }
 
-val releaseAnnouncementSubject = """🚀 ${rootProject.name} $version has been released!"""
-
-val releaseAnnouncement = """
-$releaseAnnouncementSubject
-
-${xemantic.description}
-
-${xemantic.releasePageUrl}
-"""
+fun MavenPomDeveloperSpec.projectDevs() {
+    developer {
+        id = "morisil"
+        name = "Kazik Pogoda"
+        url = "https://github.com/morisil"
+    }
+}
 
 val javaTarget = libs.versions.javaTarget.get()
 val kotlinTarget = KotlinVersion.fromVersion(libs.versions.kotlinTarget.get())
-
-repositories {
-    mavenCentral()
-}
 
 kotlin {
 
@@ -69,6 +54,7 @@ kotlin {
         )
         extraWarnings = true
         progressiveMode = true
+        //optIn.addAll("add opt ins here")
     }
 
     jvm {
@@ -130,7 +116,6 @@ kotlin {
     mingwX64()
     watchosDeviceArm64()
 
-    @OptIn(ExperimentalSwiftExportDsl::class)
     swiftExport {}
 
     sourceSets {
@@ -146,13 +131,28 @@ kotlin {
 
 }
 
-tasks {
+repositories {
+    mavenCentral()
+}
 
-    // skip tests which require XCode components to be installed
+// skip tests which require XCode components to be installed
+tasks {
     named("tvosSimulatorArm64Test") { enabled = false }
     named("watchosSimulatorArm64Test") { enabled = false }
-
 }
+
+// TODO only relevant for private projects, public project snapshots are released to maven central
+//publishing {
+//    if (isPublishingToGitHub) {
+//        repositories {
+//            maven {
+//                name = "GitHubPackages"
+//                url = uri("https://maven.pkg.github.com/xemantic/xemantic-kotlin-core")
+//                credentials(PasswordCredentials::class)
+//            }
+//        }
+//    }
+//}
 
 powerAssert {
     functions = listOf(
@@ -161,99 +161,88 @@ powerAssert {
     )
 }
 
-val unstableKeywords = listOf("alpha", "beta", "rc")
-
-fun isNonStable(
-    version: String
-) = version.lowercase().let { normalizedVersion ->
-    unstableKeywords.any {
-        it in normalizedVersion
-    }
-}
-
-tasks.withType<DependencyUpdatesTask> {
-    rejectVersionIf {
-        isNonStable(candidate.version)
-    }
-}
-
 // https://kotlinlang.org/docs/dokka-migration.html#adjust-configuration-options
 dokka {
     pluginsConfiguration.html {
-        footerMessage.set(xemantic.copyright)
+        footerMessage = xemantic.copyright
     }
 }
 
-val javadocJar by tasks.registering(Jar::class) {
-    archiveClassifier.set("javadoc")
-    from(tasks.dokkaGeneratePublicationHtml)
-}
+mavenPublishing {
 
-publishing {
-    publications {
-        withType<MavenPublication> {
-            artifact(javadocJar)
-            xemantic.configurePom(this)
+    configure(KotlinMultiplatform(
+        javadocJar = JavadocJar.Dokka("dokkaGenerateHtml"),
+        sourcesJar = true
+    ))
+
+    signAllPublications()
+
+    publishToMavenCentral(
+        automaticRelease = true,
+        validateDeployment = false // for kotlin multiplatform projects it might take a while (>900s)
+    )
+
+    coordinates(
+        groupId = group.toString(),
+        artifactId = rootProject.name,
+        version = version.toString()
+    )
+
+    pom {
+
+        name = rootProject.name
+        description = xemantic.description
+        inceptionYear = xemantic.inceptionYear
+        url = "https://github.com/${xemantic.gitHubAccount}/${rootProject.name}"
+
+        organization {
+            name = xemantic.organization
+            url = xemantic.organizationUrl
         }
+
+        licenses {
+            license {
+                name = "The Apache License, Version 2.0"
+                url = "https://www.apache.org/licenses/LICENSE-2.0.txt"
+                distribution = "https://www.apache.org/licenses/LICENSE-2.0.txt"
+            }
+        }
+
+        scm {
+            url = "https://github.com/${xemantic.gitHubAccount}/${rootProject.name}"
+            connection = "scm:git:git://github.com/${xemantic.gitHubAccount}/${rootProject.name}.git"
+            developerConnection = "scm:git:ssh://git@github.com/${xemantic.gitHubAccount}/${rootProject.name}.git"
+        }
+
+        ciManagement {
+            system = "GitHub"
+            url = "https://github.com/${xemantic.gitHubAccount}/${rootProject.name}/actions"
+        }
+
+        issueManagement {
+            system = "GitHub"
+            url = "https://github.com/${xemantic.gitHubAccount}/${rootProject.name}/issues"
+        }
+
+        developers {
+            projectDevs()
+        }
+
     }
+
 }
+
+val releaseAnnouncementSubject = """🚀 ${rootProject.name} $version has been released!"""
+val releaseAnnouncement = """
+$releaseAnnouncementSubject
+
+${xemantic.description}
+
+${xemantic.releasePageUrl}
+""".trim()
 
 jreleaser {
-    project {
-        description = xemantic.description
-        copyright = xemantic.copyright
-        license = xemantic.license!!.spxdx
-        links {
-            homepage = xemantic.homepageUrl
-            documentation = xemantic.documentationUrl
-        }
-        authors = xemantic.authorIds
-    }
-    deploy {
-        maven {
-            mavenCentral {
-                create("maven-central") {
-                    active = Active.ALWAYS
-                    url = "https://central.sonatype.com/api/v1/publisher"
-                    applyMavenCentralRules = false
-                    maxRetries = 240
-                    stagingRepository(xemantic.stagingDeployDir.path)
-                    // workaround: https://github.com/jreleaser/jreleaser/issues/1784
-                    kotlin.targets.forEach { target ->
-                        if (target !is KotlinJvmTarget) {
-                            val nonJarArtifactId = if (target.platformType == KotlinPlatformType.wasm) {
-                                "${name}-wasm-${target.name.lowercase().substringAfter("wasm")}"
-                            } else {
-                                "${name}-${target.name.lowercase()}"
-                            }
-                            artifactOverride {
-                                artifactId = nonJarArtifactId
-                                jar = false
-                                verifyPom = false
-                                sourceJar = false
-                                javadocJar = false
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-    release {
-        github {
-            skipRelease = true // we are releasing through GitHub UI
-            skipTag = true
-            token = "empty"
-            changelog {
-                enabled = false
-            }
-        }
-    }
-    checksum {
-        individual = false
-        artifacts = false
-        files = false
-    }
+
     announce {
         webhooks {
             create("discord") {
@@ -273,4 +262,5 @@ jreleaser {
             status = releaseAnnouncement
         }
     }
+
 }

@@ -40,7 +40,7 @@ In `build.gradle.kts` add:
 
 ```kotlin
 dependencies {
-    implementation("com.xemantic.template:xemantic-project-template:0.3.0")
+    implementation("com.xemantic.template:xemantic-project-template:0.1.0")
 }
 ```
 
@@ -56,7 +56,7 @@ From time to time, it is worth to:
 ### Update gradlew wrapper
 
 ```shell
-./gradlew wrapper --gradle-version 8.12.1 --distribution-type bin
+./gradlew wrapper --gradle-version 9.2.0 --distribution-type bin
 ```
 
 ### Update all the dependencies to the latest versions
@@ -66,5 +66,5 @@ All the gradle dependencies are managed by the [libs.versions.toml](gradle/libs.
 It is easy to check for the latest version by running:
 
 ```shell
-./gradlew 
+./gradlew dependencyUpdates --no-parallel
 ```
