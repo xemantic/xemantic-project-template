@@ -3,17 +3,18 @@ kotlinTarget = "2.2"
 javaTarget = "17"
 
 kotlin = "2.2.21"
+asm = "9.9.1"
 
-xemanticKotlinTest = "1.15.2"
+xemanticKotlinTest = "1.17.2"
 
 # TODO put your dependencies here
 
 versionsPlugin = "0.53.0"
 dokkaPlugin = "2.1.0"
-mavenPublishPlugin = "0.35.0"
-jreleaserPlugin = "1.20.0" # 1.21.0 has a bug
+mavenPublishPlugin = "0.36.0"
+jreleaserPlugin = "1.22.0"
 binaryCompatibilityValidatorPlugin = "0.18.1"
-xemanticConventionsPlugin = "0.6.6"
+xemanticConventionsPlugin = "0.6.8"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }

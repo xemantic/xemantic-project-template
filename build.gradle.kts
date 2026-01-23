@@ -1,7 +1,5 @@
 @file:OptIn(ExperimentalWasmDsl::class, ExperimentalKotlinGradlePluginApi::class)
 
-import com.vanniktech.maven.publish.JavadocJar
-import com.vanniktech.maven.publish.KotlinMultiplatform
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
@@ -135,6 +133,14 @@ repositories {
     mavenCentral()
 }
 
+configurations.all {
+    resolutionStrategy.eachDependency {
+        if (requested.group == "org.ow2.asm") {
+            useVersion(libs.versions.asm.get())
+        }
+    }
+}
+
 // skip tests which require XCode components to be installed
 tasks {
     named("tvosSimulatorArm64Test") { enabled = false }
@@ -170,23 +176,8 @@ dokka {
 
 mavenPublishing {
 
-    configure(KotlinMultiplatform(
-        javadocJar = JavadocJar.Dokka("dokkaGenerateHtml"),
-        sourcesJar = true
-    ))
-
+    publishToMavenCentral(automaticRelease = true)
     signAllPublications()
-
-    publishToMavenCentral(
-        automaticRelease = true,
-        validateDeployment = false // for kotlin multiplatform projects it might take a while (>900s)
-    )
-
-    coordinates(
-        groupId = group.toString(),
-        artifactId = rootProject.name,
-        version = version.toString()
-    )
 
     pom {
 
