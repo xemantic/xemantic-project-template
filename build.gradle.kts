@@ -12,6 +12,7 @@ plugins {
     alias(libs.plugins.kotlinx.binary.compatibility.validator)
     alias(libs.plugins.dokka)
     alias(libs.plugins.versions)
+    alias(libs.plugins.version.catalog.update)
     alias(libs.plugins.maven.publish)
     alias(libs.plugins.jreleaser)
     alias(libs.plugins.xemantic.conventions)
@@ -46,13 +47,10 @@ kotlin {
     compilerOptions {
         apiVersion = kotlinTarget
         languageVersion = kotlinTarget
-        freeCompilerArgs.addAll(
-            "-Xcontext-parameters",
-            "-Xcontext-sensitive-resolution"
-        )
         extraWarnings = true
         progressiveMode = true
         //optIn.addAll("add opt ins here")
+        //freeCompilerArgs.addAll()
     }
 
     jvm {
@@ -89,7 +87,6 @@ kotlin {
 
     // native, see https://kotlinlang.org/docs/native-target-support.html
     // tier 1
-    macosX64()
     macosArm64()
     iosSimulatorArm64()
     iosX64()
@@ -99,11 +96,9 @@ kotlin {
     linuxX64()
     linuxArm64()
     watchosSimulatorArm64()
-    watchosX64()
     watchosArm32()
     watchosArm64()
     tvosSimulatorArm64()
-    tvosX64()
     tvosArm64()
 
     // tier 3
@@ -171,6 +166,16 @@ powerAssert {
 dokka {
     pluginsConfiguration.html {
         footerMessage = xemantic.copyright
+    }
+}
+
+versionCatalogUpdate {
+    // preserve the manual, logically-grouped ordering of libs.versions.toml
+    sortByKey = false
+    keep {
+        // kotlinTarget / javaTarget are plain version constants with no version.ref
+        versions = setOf("kotlinTarget", "javaTarget", "asm")
+        keepUnusedVersions = false
     }
 }
 

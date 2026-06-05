@@ -49,22 +49,7 @@ dependencies {
 1. When creating new GitHub project choose this repository as a template
 2. Follow the [CHECKLIST](CHECKLIST.md)
 
-## Updating this template project
+## Development
 
-From time to time, it is worth to:
-
-### Update gradlew wrapper
-
-```shell
-./gradlew wrapper --gradle-version 9.2.0 --distribution-type bin
-```
-
-### Update all the dependencies to the latest versions
-
-All the gradle dependencies are managed by the [libs.versions.toml](gradle/libs.versions.toml) file in the `gradle` dir.
-
-It is easy to check for the latest version by running:
-
-```shell
-./gradlew dependencyUpdates --no-parallel
-```
+See [DEVELOPMENT.md](DEVELOPMENT.md) for maintenance notes — updating the gradle wrapper and the
+project dependencies.
