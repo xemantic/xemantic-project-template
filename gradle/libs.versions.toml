@@ -6,7 +6,7 @@ kotlin = "2.4.10"
 xemanticKotlinTest = "1.17.5"
 asm = "9.9.1"
 # plugins
-versionCatalogUpdatePlugin = "1.1.0"
+versionCatalogUpdatePlugin = "1.1.1"
 dokkaPlugin = "2.2.0"
 mavenPublishPlugin = "0.37.0"
 jreleaserPlugin = "1.25.0"
