@@ -11,6 +11,20 @@ Both developers and AI agents are expected to add entries as they encounter surp
 - **Do not** add codebase overviews, directory listings, or anything discoverable by reading the source.
 - Keep entries concise: one line per lesson, grouped under a heading if a theme emerges.
 
+## Conventions
+
+### Markdown authoring
+
+Markdown files use [semantic line breaks](https://sembr.org/):
+break a line after a sentence,
+and optionally at clause boundaries within a long sentence,
+so that diffs stay meaningful and reviewable.
+
+There is no column width limit —
+never reflow or hard-wrap a paragraph to fit some character count.
+Modern editors soft-wrap Markdown visually,
+see the [README](README.md#markdown-soft-wrapping-in-the-ide) for how to enable it.
+
 ## Known gotchas
 
 ## Anti-patterns to avoid
