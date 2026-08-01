@@ -13,13 +13,7 @@ the build tooling and dependencies.
 
 All the gradle dependencies are managed by the [libs.versions.toml](gradle/libs.versions.toml) file in the `gradle` dir.
 
-It is easy to check for the latest versions by running:
-
-```shell
-./gradlew dependencyUpdates --no-parallel
-```
-
-This only reports the available updates. To apply them automatically to
+To resolve the latest versions and apply them automatically to
 [libs.versions.toml](gradle/libs.versions.toml), run the
 [version-catalog-update](https://github.com/littlerobots/version-catalog-update-plugin) plugin:
 
