@@ -51,5 +51,41 @@ dependencies {
 
 ## Development
 
-See [DEVELOPMENT.md](DEVELOPMENT.md) for maintenance notes — updating the gradle wrapper and the
-project dependencies.
+See [DEVELOPMENT.md](DEVELOPMENT.md) for maintenance notes —
+updating the gradle wrapper and the project dependencies.
+
+## Documentation conventions
+
+All the Markdown files in this project are authored with
+[semantic line breaks](https://sembr.org/).
+Each sentence starts on its own line,
+and long sentences may be split further at clause boundaries.
+This keeps `git diff` and code review focused on the sentence that actually changed,
+instead of on a whole reflowed paragraph.
+
+There is no maximum line length,
+and paragraphs are never hard-wrapped to a fixed column.
+Line length is a rendering concern,
+so it is left to the editor.
+
+### Markdown soft wrapping in the IDE
+
+**IntelliJ IDEA**:
+`Settings` → `Editor` → `General` → `Soft Wraps`,
+enable `Soft-wrap these files` and make sure the mask contains `*.md`
+(the default mask already does).
+To toggle it for the file at hand only,
+use `View` → `Active Editor` → `Soft-Wrap`.
+
+**VS Code**:
+add the following to your `settings.json`:
+
+```json
+{
+  "[markdown]": {
+    "editor.wordWrap": "on"
+  }
+}
+```
+
+Alternatively toggle it for the current file with `Alt`+`Z` (`Option`+`Z` on macOS).

@@ -2,15 +2,15 @@
 # libraries
 kotlinTarget = "2.4"
 javaTarget = "17"
-kotlin = "2.4.0"
+kotlin = "2.4.10"
 xemanticKotlinTest = "1.17.5"
 asm = "9.9.1"
 # plugins
-versionsPlugin = "0.54.0"
+versionsPlugin = "0.58.0"
 versionCatalogUpdatePlugin = "1.1.0"
 dokkaPlugin = "2.2.0"
-mavenPublishPlugin = "0.36.0"
-jreleaserPlugin = "1.24.0"
+mavenPublishPlugin = "0.37.0"
+jreleaserPlugin = "1.25.0"
 binaryCompatibilityValidatorPlugin = "0.18.1"
 xemanticConventionsPlugin = "0.6.8"
 
