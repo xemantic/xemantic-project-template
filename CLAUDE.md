@@ -34,6 +34,12 @@ see the [README](README.md#markdown-soft-wrapping-in-the-ide) for how to enable 
 - Dependabot scans `kotlin-js-store/yarn.lock` and `kotlin-js-store/wasm/yarn.lock` for vulnerable transitive npm packages
   pulled in by the Kotlin/JS test tooling (mocha, karma, webpack) —
   fix alerts by pinning the patched version in `npmResolutions` rather than waiting for upstream.
+- The `Reporter option 'alsoWithHtml' has no effect` warning printed by JS/Wasm test tasks
+  comes from JetBrains' own `kotlin-web-helpers` npm package ([kotlin-web-helpers#11](https://github.com/Kotlin/kotlin-web-helpers/issues/11)) —
+  nothing in this build causes it and there is no knob to suppress it, so leave it alone.
+- After a fresh Gradle daemon starts, the first build reports `configuration cache cannot be reused because file '.../caches/jreleaser/jreleaser/<version>/marker.txt' has changed` —
+  the JReleaser plugin bumps a banner counter in that file behind Gradle's back on every configuration,
+  so the cache is invalidated once per daemon lifetime and reused normally afterwards; it is harmless.
 
 ## Anti-patterns to avoid
 
