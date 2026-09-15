@@ -31,9 +31,10 @@ see the [README](README.md#markdown-soft-wrapping-in-the-ide) for how to enable 
 - The `rootPackageJson` and `wasmRootPackageJson` tasks do not track yarn `resolution(...)` entries as inputs,
   so after changing them the lock files stay stale unless these tasks are forced with `--rerun`
   (see the comment above `npmResolutions` in `build.gradle.kts` for the full command).
-- Dependabot scans `kotlin-js-store/yarn.lock` and `kotlin-js-store/wasm/yarn.lock` for vulnerable transitive npm packages
-  pulled in by the Kotlin/JS test tooling (mocha, karma, webpack) —
-  fix alerts by pinning the patched version in `npmResolutions` rather than waiting for upstream.
+- Dependabot alerts on `kotlin-js-store/yarn.lock` and `kotlin-js-store/wasm/yarn.lock` concern only the Kotlin/JS test tooling (mocha, karma, webpack),
+  none of which ships in the published artifacts —
+  dismiss them on GitHub as "vulnerable code is not actually used" instead of forcing versions via yarn resolutions,
+  which pins majors the tooling never declared support for.
 - The `Reporter option 'alsoWithHtml' has no effect` warning printed by JS/Wasm test tasks
   comes from JetBrains' own `kotlin-web-helpers` npm package ([kotlin-web-helpers#11](https://github.com/Kotlin/kotlin-web-helpers/issues/11)) —
   nothing in this build causes it and there is no knob to suppress it, so leave it alone.

@@ -4,10 +4,6 @@ import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
-import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnPlugin
-import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnRootExtension
-import org.jetbrains.kotlin.gradle.targets.wasm.yarn.WasmYarnPlugin
-import org.jetbrains.kotlin.gradle.targets.wasm.yarn.WasmYarnRootExtension
 import org.jreleaser.model.Active
 
 plugins {
@@ -136,27 +132,6 @@ configurations.all {
         if (requested.group == "org.ow2.asm") {
             useVersion(libs.versions.asm.get())
         }
-    }
-}
-
-// force patched versions of transitive npm dependencies flagged by Dependabot,
-// after changing these, regenerate the lock files with:
-// ./gradlew rootPackageJson --rerun wasmRootPackageJson --rerun kotlinUpgradeYarnLock kotlinWasmUpgradeYarnLock
-val npmResolutions = mapOf(
-    "fast-uri" to "3.1.6",
-    "js-yaml" to "4.3.2",
-    "serialize-javascript" to "7.0.5",
-    "diff" to "8.0.3",
-    "qs" to "6.16.0"
-)
-plugins.withType<YarnPlugin> {
-    the<YarnRootExtension>().apply {
-        npmResolutions.forEach { (name, version) -> resolution(name, version) }
-    }
-}
-plugins.withType<WasmYarnPlugin> {
-    the<WasmYarnRootExtension>().apply {
-        npmResolutions.forEach { (name, version) -> resolution(name, version) }
     }
 }
 
