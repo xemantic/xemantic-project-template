@@ -29,6 +29,13 @@ see the [README](README.md#markdown-soft-wrapping-in-the-ide) for how to enable 
 
 - After upgrading the Gradle wrapper, `jvmTest` may fail with `NoSuchFileException: build/test-results/jvmTest/binary/in-progress-results-generic.bin`, because the results of the previous Gradle version are stale — delete `build/test-results` (or run `clean`) and retry.
 
+- The `rootPackageJson` and `wasmRootPackageJson` tasks do not track yarn `resolution(...)` entries as inputs,
+  so after changing them the lock files stay stale unless these tasks are forced with `--rerun`
+  (see the comment above `npmResolutions` in `build.gradle.kts` for the full command).
+- Dependabot scans `kotlin-js-store/yarn.lock` and `kotlin-js-store/wasm/yarn.lock` for vulnerable transitive npm packages
+  pulled in by the Kotlin/JS test tooling (mocha, karma, webpack) —
+  fix alerts by pinning the patched version in `npmResolutions` rather than waiting for upstream.
+
 ## Anti-patterns to avoid
 
 - Do not add content to this file that is already discoverable by reading the source or build scripts — that inflates context without adding signal, reducing AI agent task success rates (see [arxiv 2602.11988](https://arxiv.org/abs/2602.11988)).
