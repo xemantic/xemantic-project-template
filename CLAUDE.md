@@ -28,6 +28,19 @@ see the [README](README.md#markdown-soft-wrapping-in-the-ide) for how to enable 
 ## Known gotchas
 
 - After upgrading the Gradle wrapper, `jvmTest` may fail with `NoSuchFileException: build/test-results/jvmTest/binary/in-progress-results-generic.bin`, because the results of the previous Gradle version are stale — delete `build/test-results` (or run `clean`) and retry.
+- The `rootPackageJson` and `wasmRootPackageJson` tasks do not track yarn `resolution(...)` entries as inputs,
+  so after changing them the lock files stay stale unless these tasks are forced with `--rerun`
+  (see the comment above `npmResolutions` in `build.gradle.kts` for the full command).
+- Dependabot alerts on `kotlin-js-store/yarn.lock` and `kotlin-js-store/wasm/yarn.lock` concern only the Kotlin/JS test tooling (mocha, karma, webpack),
+  none of which ships in the published artifacts —
+  dismiss them on GitHub as "vulnerable code is not actually used" instead of forcing versions via yarn resolutions,
+  which pins majors the tooling never declared support for.
+- The `Reporter option 'alsoWithHtml' has no effect` warning printed by JS/Wasm test tasks
+  comes from JetBrains' own `kotlin-web-helpers` npm package ([kotlin-web-helpers#11](https://github.com/Kotlin/kotlin-web-helpers/issues/11)) —
+  nothing in this build causes it and there is no knob to suppress it, so leave it alone.
+- After a fresh Gradle daemon starts, the first build reports `configuration cache cannot be reused because file '.../caches/jreleaser/jreleaser/<version>/marker.txt' has changed` —
+  the JReleaser plugin bumps a banner counter in that file behind Gradle's back on every configuration,
+  so the cache is invalidated once per daemon lifetime and reused normally afterwards; it is harmless.
 
 ## Anti-patterns to avoid
 
