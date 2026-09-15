@@ -23,7 +23,7 @@ so that diffs stay meaningful and reviewable.
 There is no column width limit —
 never reflow or hard-wrap a paragraph to fit some character count.
 Modern editors soft-wrap Markdown visually,
-see the [README](README.md#markdown-soft-wrapping-in-the-ide) for how to enable it.
+see [DEVELOPMENT.md](DEVELOPMENT.md#markdown-soft-wrapping-in-the-ide) for how to enable it.
 
 ## Known gotchas
 
