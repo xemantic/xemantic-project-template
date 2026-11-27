@@ -71,6 +71,10 @@ see [DEVELOPMENT.md](DEVELOPMENT.md#markdown-soft-wrapping-in-the-ide) for how t
 - After a fresh Gradle daemon starts, the first build reports `configuration cache cannot be reused because file '.../caches/jreleaser/jreleaser/<version>/marker.txt' has changed` —
   the JReleaser plugin bumps a banner counter in that file behind Gradle's back on every configuration,
   so the cache is invalidated once per daemon lifetime and reused normally afterwards; it is harmless.
+- `versionCatalogUpdate` reports `invocation of 'Task.project' at execution time is unsupported with the configuration cache` and discards the cache entry —
+  the version-catalog-update plugin is not configuration-cache compatible yet; the task still updates `libs.versions.toml` correctly, so ignore the warning.
+- ABI validation uses the Kotlin Gradle plugin's built-in `abiValidation()`, not the standalone binary-compatibility-validator plugin, so `apiDump` / `apiCheck` do not exist —
+  after an intended public API change run `./gradlew updateKotlinAbi`, which rewrites both `api/*.api` (JVM) and `api/*.klib.api` (all non-JVM targets); `check` runs `checkKotlinAbi`.
 
 - The Gradle configuration cache is enabled (`gradle.properties`), so a task action (`doLast { … }`) must not call a function declared in the build script — the script object is not serializable.
   Inline the logic or move the helper into `buildSrc` / an included build, and register tasks with `tasks.register(...)` rather than the `by tasks.registering` delegate.

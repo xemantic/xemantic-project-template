@@ -4,12 +4,12 @@ import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
+import org.jetbrains.kotlin.gradle.dsl.abi.ExperimentalAbiValidation
 import org.jreleaser.model.Active
 
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.kotlin.plugin.power.assert)
-    alias(libs.plugins.kotlinx.binary.compatibility.validator)
     alias(libs.plugins.dokka)
     alias(libs.plugins.version.catalog.update)
     alias(libs.plugins.maven.publish)
@@ -42,6 +42,10 @@ kotlin {
 
     // TODO remove for a non-library project
     explicitApi()
+
+    // TODO remove for a non-library project
+    @OptIn(ExperimentalAbiValidation::class)
+    abiValidation()
 
     compilerOptions {
         apiVersion = kotlinTarget
